@@ -53,42 +53,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:orientation="vertical">
 
-           <LinearLayout
-               android:id="@+id/helplineLinearLayout"
-               android:layout_width="wrap_content"
-               android:layout_height="0dp"
-               android:orientation="horizontal"
-               android:layout_weight="0.6"
-               android:layout_marginLeft="7dp"
-               android:layout_marginRight="8dp">
-
-               <Button
-                   android:id="@+id/helplineCard1"
-                   android:layout_width="0dp"
-                   android:layout_height="match_parent"
-                   android:layout_weight="1"
-                   android:text="Women Helpline Number"
-                   android:textAllCaps="false"
-                   android:layout_margin="8dp"
-                   android:textSize="18sp"
-                   android:padding="3dp"
-                   android:backgroundTint="@color/callHelpline1"
-                   android:textColor="@color/mainColor">
-               </Button>
-               <Button
-                   android:id="@+id/helplineCard2"
-                   android:layout_width="0dp"
-                   android:layout_height="match_parent"
-                   android:layout_weight="1"
-                   android:text="Emergency Helpline Number"
-                   android:textAllCaps="false"
-                   android:layout_margin="8dp"
-                   android:textSize="18sp"
-                   android:padding="3dp"
-                   android:backgroundTint="@color/callHelpline2"
-                   android:textColor="@color/mainColor">
-               </Button>
-           </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/mainTask1"
@@ -112,7 +76,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="Add Emergency Contacts"
                         android:textColor="@color/mainColor"
                         android:textSize="21sp"
                         android:textStyle="bold"
@@ -121,7 +84,6 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/addcontacts"
                         android:layout_weight="1"/>
 
                 </LinearLayout>
@@ -149,7 +111,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="Share Your Current Location"
                         android:textColor="@color/mainColor"
                         android:textSize="21sp"
                         android:textStyle="bold"
@@ -158,7 +119,6 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/instanthelp"
                         android:layout_weight="1"/>
 
                 </LinearLayout>
@@ -187,7 +147,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="Educating Yourself About Self Defense"
                         android:textColor="@color/mainColor"
                         android:textSize="21sp"
                         android:textStyle="bold"
@@ -196,7 +155,6 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/education"
                         android:layout_weight="1"/>
 
                 </LinearLayout>

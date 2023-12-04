@@ -28,11 +28,6 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         setUpViews()
-        callHelpline1()
-        callHelpline2()
-        callMainTask1()
-        callMainTask3()
-        callMainTask2()
 
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         val ref = db.collection("user").document(userId)
@@ -52,16 +47,6 @@ class Home : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(this,"Failed to fetch data",Toast.LENGTH_SHORT).show()
             }
-
-    }
-
-    private fun callMainTask3() {
-        val mainTask3 : CardView = findViewById(R.id.mainTask3)
-
-        mainTask3.setOnClickListener {
-            val intent = Intent(this,MainTask3::class.java)
-            startActivity(intent)
-        }
 
     }
 
@@ -106,28 +91,6 @@ class Home : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun callHelpline1(){
-
-        val cardView1 : Button = findViewById(R.id.helplineCard1)
-        cardView1.setOnClickListener{
-
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:7827-170-170")
-            startActivity(intent)
-        }
-    }
-
-    private fun callHelpline2(){
-
-        val cardView2 : Button = findViewById(R.id.helplineCard2)
-        cardView2.setOnClickListener{
-
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:112")
-            startActivity(intent)
-        }
-    }
-
     private fun replaceFragment(fragment: Fragment){
 
         val rootView : LinearLayout = findViewById(R.id.rootView)
@@ -136,24 +99,6 @@ class Home : AppCompatActivity() {
         val fragmentTransaction : FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout,fragment)
         fragmentTransaction.commit()
-    }
-
-    private fun callMainTask1(){
-
-        val mainTask1 : CardView = findViewById(R.id.mainTask1)
-        mainTask1.setOnClickListener {
-            val intent = Intent(applicationContext,MainTask1::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun callMainTask2(){
-
-        val mainTask2 : CardView = findViewById(R.id.mainTask2)
-        mainTask2.setOnClickListener {
-            val intent = Intent(applicationContext,MainTask2::class.java)
-            startActivity(intent)
-        }
     }
 
     override fun onBackPressed() {

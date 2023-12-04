@@ -30,19 +30,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.rentjunction.MainTask1"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName="com.example.rentjunction.Home" />
-        <activity
-            android:name="com.example.rentjunction.MainTask2"
-            android:exported="false"
-            android:parentActivityName="com.example.rentjunction.Home" />
-        <activity
-            android:name="com.example.rentjunction.MainTask3"
-            android:exported="false"
-            android:parentActivityName="com.example.rentjunction.Home" />
-        <activity
             android:name="com.example.rentjunction.RegisterActivity"
             android:exported="false" />
         <activity
@@ -51,13 +38,6 @@
         <activity
             android:name="com.example.rentjunction.ResetPassword"
             android:exported="false" />
-        <activity
-            android:name="com.example.rentjunction.EducateCard1"
-            android:exported="false" />
-        <activity
-            android:name="com.example.rentjunction.EducateCard2"
-            android:exported="false" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

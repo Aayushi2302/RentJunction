@@ -16,7 +16,19 @@
         android:theme="@style/Theme.RentJunction"
         tools:targetApi="31">
         <activity
-            android:name="com.example.rentjunction.MainActivity"
+            android:name=".DeliveryBuy"
+            android:exported="false" />
+        <activity
+            android:name=".BuyScreen"
+            android:exported="false" />
+        <activity
+            android:name=".ProvideProduct"
+            android:exported="false" />
+        <activity
+            android:name=".RentProduct"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -26,18 +38,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.rentjunction.Home"
+            android:name=".Home"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.rentjunction.RegisterActivity"
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.rentjunction.LoginActivity"
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.rentjunction.ResetPassword"
+            android:name=".ResetPassword"
             android:exported="false" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

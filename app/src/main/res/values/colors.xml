@@ -10,6 +10,5 @@
     <color name="mainColor">#5c0632</color>
     <color name="grey">#6c757d</color>
     <color name="cardView1">#fab20b</color>
-    <color name="callHelpline1">#EED2CC</color>
-    <color name="callHelpline2">#E0E0E0</color>
+    <color name="background">#EED2CC</color>
 </resources>

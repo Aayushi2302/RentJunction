@@ -1,7 +1,6 @@
 package com.example.rentjunction
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -28,6 +27,8 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         setUpViews()
+        task1()
+        task2()
 
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         val ref = db.collection("user").document(userId)
@@ -103,5 +104,22 @@ class Home : AppCompatActivity() {
 
     override fun onBackPressed() {
         finishAffinity()
+    }
+
+    private fun task1() {
+        val card: CardView = findViewById(R.id.task1)
+        card.setOnClickListener {
+            val intent = Intent(applicationContext, BuyScreen::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    private fun task2() {
+        val card: CardView = findViewById(R.id.task2)
+        card.setOnClickListener {
+            val intent = Intent(applicationContext, ProvideProduct::class.java)
+            startActivity(intent)
+        }
     }
 }

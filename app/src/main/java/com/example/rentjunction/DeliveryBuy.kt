@@ -16,20 +16,12 @@ class DeliveryBuy : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // hide the title bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE) //will hide the title
-        Objects.requireNonNull(supportActionBar)?.hide() // hide the title bar
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        ) //enable full screen
-        // hide the title bar
+        setContentView(R.layout.activity_delivery_buy)
 
         // login info passing
         val intents = intent
         emails = intents.getStringExtra("emails")
         // login info passing
-        setContentView(R.layout.activity_delivery_buy)
 
         homeBut2.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@DeliveryBuy, Home::class.java)

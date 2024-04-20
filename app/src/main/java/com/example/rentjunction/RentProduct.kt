@@ -1,13 +1,20 @@
 package com.example.rentjunction
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.HashMap
@@ -41,6 +48,16 @@ class RentProduct : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
+        setContentView(R.layout.activity_rent_product)
+
+        i = findViewById(R.id.p_image)
+        n = findViewById(R.id.p_name)
+        d = findViewById(R.id.p_des)
+        p = findViewById(R.id.p_price)
+        r = findViewById(R.id.p_rating)
+        cancel = findViewById(R.id.cancel)
+        next = findViewById(R.id.confirm)
+
         val intent = intent
         emails = intent.getStringExtra("emails")
         name = intent.getStringExtra("name")
@@ -49,51 +66,112 @@ class RentProduct : AppCompatActivity() {
         price = intent.getStringExtra("price")
         image = intent.getStringExtra("image")
 
-        setContentView(R.layout.activity_rent_product)
+        // Load image using Glide
+        if (image != null) {
+            Glide.with(this@RentProduct)
+                .load(Uri.parse(image)) // Convert string URI to Uri object
+                .into(i)
+        }
 
-        i = findViewById(R.id.p_image)
-        Glide.with(this@RentProduct).load(image).into(i)
-
-        n = findViewById(R.id.p_name)
-        d = findViewById(R.id.p_des)
-        p = findViewById(R.id.p_price)
-        r = findViewById(R.id.p_rating)
+        // Set text for EditText fields
         n.setText(name)
         d.setText(description)
         p.setText(price)
         r.setText(rating)
 
-        cancel = findViewById(R.id.cancel)
+        // Set click listeners
         cancel.setOnClickListener {
-            val intent = Intent(this@RentProduct, BuyScreen::class.java)
-            intent.putExtra("emails", emails)
-            startActivity(intent)
+            navigateToBuyScreen()
+        }
+
+        next.setOnClickListener {
+            handlePermissionsAndSaveData()
         }
 
         firebaseFirestore = FirebaseFirestore.getInstance()
-        next = findViewById(R.id.confirm)
-        next.setOnClickListener {
-            val items = HashMap<String, String>()
-            items["name"] = name!!
-            items["description"] = description!!
-            items["rating"] = rating!!
-            items["address"] = price!!
-            items["image"] = image!!
-            items["type"] = "Paid"
-            items["head"] = "Bought By You"
+    }
 
-            firebaseFirestore.collection(emails!!).add(items)
+    private fun navigateToBuyScreen() {
+        val intent = Intent(this@RentProduct, BuyScreen::class.java)
+        intent.putExtra("emails", emails)
+        startActivity(intent)
+    }
 
-            val intent = Intent(this@RentProduct, DeliveryBuy::class.java)
-            intent.putExtra("emails", emails)
-            startActivity(intent)
+    private fun handlePermissionsAndSaveData() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission is not granted, request it
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                PERMISSION_REQUEST_CODE
+            )
+        } else {
+            // Permission is already granted, save data
+            saveData()
+        }
+    }
+
+    private fun saveData() {
+        // Check if 'emails' is null or empty
+        if (emails.isNullOrEmpty()) {
+            // Handle the case where 'emails' is null or empty
+            Toast.makeText(this@RentProduct, "Email address is empty or null", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Create a collection reference using 'emails'
+        val collectionReference = firebaseFirestore.collection(emails!!)
+
+        val items = HashMap<String, String>()
+        items["name"] = name ?: ""
+        items["description"] = description ?: ""
+        items["rating"] = rating ?: ""
+        items["address"] = price ?: ""
+        items["image"] = image ?: ""
+        items["type"] = "Paid"
+        items["head"] = "Bought By You"
+
+        collectionReference.add(items)
+            .addOnSuccessListener {
+                val intent = Intent(this@RentProduct, DeliveryBuy::class.java)
+                intent.putExtra("emails", emails)
+                startActivity(intent)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this@RentProduct, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed with saving data
+                saveData()
+            } else {
+                // Permission denied, show a message or redirect to settings
+                Toast.makeText(this, "Permission denied. You can grant the permission in the app settings.", Toast.LENGTH_SHORT)
+                    .show()
+                // Optionally, you can redirect the user to the app settings
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = Uri.fromParts("package", packageName, null)
+                startActivity(intent)
+            }
         }
     }
 
     override fun onBackPressed() {
-        val intent = Intent(this@RentProduct, BuyScreen::class.java)
-        intent.putExtra("emails", emails)
-        startActivity(intent)
+        navigateToBuyScreen()
         super.onBackPressed()
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 1001
     }
 }

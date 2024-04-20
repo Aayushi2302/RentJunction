@@ -4,23 +4,20 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/home"
+        android:iconTint="@color/mainColor"
         android:checked="true"
         android:title="Home"/>
 
     <item
         android:id="@+id/myorder"
         android:icon="@drawable/sales"
+        android:iconTint="@color/mainColor"
         android:title="My Sales" />
 
     <item
         android:id="@+id/mycart"
         android:icon="@drawable/rent"
+        android:iconTint="@color/mainColor"
         android:title="My Order" />
-
-    <item
-        android:id="@+id/notifications"
-        android:icon="@drawable/notifications"
-        android:title="Notifications" />
-
 
 </menu>

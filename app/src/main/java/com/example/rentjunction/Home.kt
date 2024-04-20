@@ -1,54 +1,64 @@
 package com.example.rentjunction
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_home.appBar
+import kotlinx.android.synthetic.main.nav_header.*
 
 class Home : AppCompatActivity() {
 
     lateinit var toggle : ActionBarDrawerToggle
-    private var db = Firebase.firestore
+    var emails: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        val intents = intent
+        emails = intents.getStringExtra("emails")
+
         setUpViews()
         task1()
         task2()
 
-        val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        val ref = db.collection("user").document(userId)
+        val db = FirebaseDatabase.getInstance()
+        val ref = db.getReference("Users")
 
-        ref.get().addOnSuccessListener {
-            if(it!=null){
-                val name = it.data?.get("name")?.toString()
-                val email = it.data?.get("email")?.toString()
 
-                val userName : TextView = findViewById(R.id.userName)
-                val userEmail : TextView = findViewById(R.id.userMail)
-                userName.text = name
-                userEmail.text = email
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                //check all user data and its child one by one
+                for (ds in snapshot.children) {
+                    // stop where the tracked emails matched with database email
+                    // then show all email's parent's all child info
 
+                    if (ds.child("email").getValue(String::class.java) == emails) {
+                        userName.text = ds.child("name").getValue(String::class.java)
+                        userMail.text = ds.child("email").getValue(String::class.java)
+                    }
+                }
             }
-        }
-            .addOnFailureListener {
-                Toast.makeText(this,"Failed to fetch data",Toast.LENGTH_SHORT).show()
-            }
 
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Toast.makeText(this@Home,"Failed to fetch data",Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setUpViews(){
@@ -83,6 +93,31 @@ class Home : AppCompatActivity() {
             }
             true
         }
+
+//        navbottom.setOnNavigationItemSelectedListener {
+//
+//            it.isChecked = true
+//            when(it.itemId){
+//
+//                R.id.home->{
+//                    val intent = Intent(this@Home,Home::class.java)
+//                    startActivity(intent)
+//                }
+//                R.id.mycart ->{
+//                    val intent = Intent(this@Home,Status::class.java)
+//                    intent.putExtra("emails" ,emails);
+//                    intent.putExtra("type" ,"buy");
+//                    startActivity(intent)
+//                }
+//                R.id.myorder -> {
+//                    val intent = Intent(this@Home,Status::class.java)
+//                    intent.putExtra("emails" ,emails);
+//                    intent.putExtra("type" ,"rent");
+//                    startActivity(intent)
+//                }
+//            }
+//            true
+//        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -110,6 +145,7 @@ class Home : AppCompatActivity() {
         val card: CardView = findViewById(R.id.task1)
         card.setOnClickListener {
             val intent = Intent(applicationContext, BuyScreen::class.java)
+            intent.putExtra("emails" ,emails)
             startActivity(intent)
         }
 
@@ -119,6 +155,7 @@ class Home : AppCompatActivity() {
         val card: CardView = findViewById(R.id.task2)
         card.setOnClickListener {
             val intent = Intent(applicationContext, ProvideProduct::class.java)
+            intent.putExtra("emails" ,emails)
             startActivity(intent)
         }
     }
